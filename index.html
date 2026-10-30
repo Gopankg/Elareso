@@ -187,34 +187,104 @@ footer a:hover{color:var(--sage)}
 <dialog id="lb"><img alt=""></dialog>
 
 <script>
-/* ===== EDIT THIS BLOCK: your details, media and prices ===== */
+/* =====================================================================
+   EDIT THIS BLOCK: your details, media and prices
+   =====================================================================
+
+   HOW TO SWAP THE STOCK PHOTOS / VIDEOS FOR YOUR OWN
+   ---------------------------------------------------
+   1. Upload your file into your repo's images folder or videos folder.
+   2. Press Ctrl+F (Cmd+F on Mac) and search the slot ID, e.g.  WALK-3
+      Every slot has its own ID, listed below.
+   3. Replace the stock value next to that ID with your file:
+        photo:  IMG+"your-photo.jpg"
+        video:  VID+"your-video.mp4"
+      Then delete the "STOCK" comment beside it.
+   4. Search the word  STOCK  at any time to see which slots still use
+      stock media.
+
+   SLOT IDs
+     HERO-1  hero background image        HERO-2  hero background video
+     WALK-1  A-Frame, ground floor (poster image + video)
+     WALK-2  A-Frame, upper floor  (poster image + video)
+     WALK-3  Plantation House, ground floor (poster image + video)
+     WALK-4  Plantation House, upper floor  (poster image + video)
+     GAL-1 to GAL-8   the eight gallery photos
+
+   FILE NAME TIPS
+   - GitHub is case-sensitive: "Pool.JPG" and "pool.jpg" are different files.
+   - Avoid spaces; use dashes, e.g. aframe-ground.mp4
+   - Use MP4 (H.264) for videos. Keep each one small (roughly under 25 MB);
+     GitHub refuses files over 100 MB.
+   ===================================================================== */
+
 const E={name:"Elavu",tagline:"Rooted in peace.",wa:"910000000000",phone:"+91 00000 00000",ig:"https://instagram.com/elavu",loc:"Mamalakandam, Ernakulam, Kerala"};
+
+// Folder names inside your repo. Change these two lines if your folders are named differently.
+const IMG="IMG/";
+const VID="VID/";
+
+// Stock helpers. Once every STOCK slot below is replaced, you can delete U, V1, V2 and V3.
 const U=(id,w=1000)=>`https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
 const V1="https://cdn.pixabay.com/video/2020/12/15/59292-492740991_large.mp4",
       V2="https://cdn.pixabay.com/video/2022/10/23/136182-764387455_large.mp4",
       V3="https://cdn.pixabay.com/video/2017/03/01/8043-206222758_large.mp4";
-//const HERO={video:V1,poster:U("1473773508845-188df298d2d1",1920)};
-const HERO = {
-  poster: "Gemedit.png"
+
+/* ---------- HERO (top of the page) ---------- */
+const HERO={
+  // [HERO-1] Background image. Currently "Gemedit.png" in the repo root.
+  // If the file is inside your images folder, use IMG+"Gemedit.png" instead.
+  poster: "Gemedit.png",
+  // [HERO-2] Background video (optional). Leave "" for image only,
+  // or use e.g. VID+"hero.mp4". It plays muted and loops over the image.
+  video: ""
 };
+
 const MAP="https://www.google.com/maps?q=Mamalakandam%2C%20Kerala&output=embed";
-// building -> [floor, poster, video]
+
+/* ---------- WALKTHROUGH VIDEOS (the two building tabs) ----------
+   Each entry is [floor name, poster image, video].
+   The poster image is the still shown before the video is played. */
 const WALK={
-  "A-Frame Canopy Villa":[["Ground Floor",U("1505693416388-ac5ce068fe85",1200),V2],["Upper Floor",U("1522708323590-d24dbb6b0261",1200),V3]],
-  "The Plantation House":[["Ground Floor",U("1566073771259-6a850609f446",1200),V2],["Upper Floor",U("1611892440504-42a79dfb7953",1200),V1]]
+  "A-Frame Canopy Villa":[
+    ["Ground Floor",
+      U("1505693416388-ac5ce068fe85",1200), /* STOCK [WALK-1 poster] e.g. IMG+"aframe-ground.jpg" */
+      VID+"a0.mp4"                                    /* STOCK [WALK-1 video]  e.g. VID+"aframe-ground.mp4" */
+    ],
+    ["Upper Floor",
+      U("1522708323590-d24dbb6b0261",1200), /* STOCK [WALK-2 poster] e.g. IMG+"aframe-upper.jpg" */
+      VID+"a1.mp4"                                    /* STOCK [WALK-2 video]  e.g. VID+"aframe-upper.mp4" */
+    ]
+  ],
+  "The Plantation House":[
+    ["Ground Floor",
+      U("1566073771259-6a850609f446",1200), /* STOCK [WALK-3 poster] e.g. IMG+"plantation-ground.jpg" */
+      VID+"b0.mp4"                                    /* STOCK [WALK-3 video]  e.g. VID+"plantation-ground.mp4" */
+    ],
+    ["Upper Floor",
+      U("1611892440504-42a79dfb7953",1200), /* STOCK [WALK-4 poster] e.g. IMG+"plantation-upper.jpg" */
+      VID+"b1.mp4"                                    /* STOCK [WALK-4 video]  e.g. VID+"plantation-upper.mp4" */
+    ]
+  ]
 };
-// [category, title, unsplash photo id, size: ""|"tall"|"wide"]
+
+/* ---------- GALLERY ----------
+   Each entry is [category, title, image, size].
+   size: "" (normal) | "tall" | "wide".
+   Categories create the filter buttons automatically. */
 const G=[
-  ["Room Walkarounds","A-Frame Interior","1505693416388-ac5ce068fe85","tall"],
-  ["Natural Pool","Forest Pool, Canopy Overhead","1507525428034-b723cf961d3d","wide"],
-  ["Misty Forest Views","Morning Mist Over Mamalakandam","1473773508845-188df298d2d1",""],
-  ["Campfire Nights","Campfire &amp; BBQ Under the Stars","1526279345875-7df7dff4f0d9",""],
-  ["Misty Forest Views","Rainforest Canopy","1448375240586-882707db888b","wide"],
-  ["Room Walkarounds","Plantation House Bedroom","1566073771259-6a850609f446","tall"],
-  ["Natural Pool","Stone Edges &amp; Moss","1433086966358-54859d0ea738",""],
-  ["Campfire Nights","Quiet Embers","1419242902214-272b3f66ee7a",""]
+  ["Room Walkarounds","A-Frame Interior",U("1505693416388-ac5ce068fe85"),"tall"],           /* STOCK [GAL-1] e.g. IMG+"gallery-1.jpg" */
+  ["Natural Pool","Forest Pool, Canopy Overhead",U("1507525428034-b723cf961d3d"),"wide"],    /* STOCK [GAL-2] */
+  ["Misty Forest Views","Morning Mist Over Mamalakandam",U("1473773508845-188df298d2d1"),""], /* STOCK [GAL-3] */
+  ["Campfire Nights","Campfire &amp; BBQ Under the Stars",U("1526279345875-7df7dff4f0d9"),""],/* STOCK [GAL-4] */
+  ["Misty Forest Views","Rainforest Canopy",U("1448375240586-882707db888b"),"wide"],        /* STOCK [GAL-5] */
+  ["Room Walkarounds","Plantation House Bedroom",U("1566073771259-6a850609f446"),"tall"],   /* STOCK [GAL-6] */
+  ["Natural Pool","Stone Edges &amp; Moss",U("1433086966358-54859d0ea738"),""],              /* STOCK [GAL-7] */
+  ["Campfire Nights","Quiet Embers",U("1419242902214-272b3f66ee7a"),""]                     /* STOCK [GAL-8] */
 ];
-// price = per night (INR); max = guest limit used by the booking form
+
+/* ---------- PACKAGES ----------
+   price = per night (INR); max = guest limit used by the booking form */
 const P=[
   {id:"couple",name:"Couple Escape",tag:"1 room, 1 floor",price:4500,cap:"2 adults",max:2,blurb:"One floor in either building — a single King room wrapped in canopy.",inc:["1 floor in either building (1 King Room)","Complimentary breakfast and dinner for 2 adults","Access to natural pool, campfire area and Wi-Fi"]},
   {id:"building",name:"The Building Takeover",tag:"6-pack, entire building",price:8000,cap:"Up to 6 guests",max:6,blurb:"Rent an entire 2-story building — both rooms, both floors, total privacy.",inc:["Entire 2-story building (2 rooms, 2 floors)","Complimentary breakfast for up to 6 guests","Access to pool, campfire, BBQ area and Wi-Fi"]},
@@ -245,8 +315,9 @@ $("#ph").href=$("#fp").href="tel:"+E.phone.replace(/\s/g,"");
 $("#ig").href=E.ig;$("#yr").textContent=new Date().getFullYear();
 $("#wf").href=wa(`Hello ${E.name}! I’d like to know more about staying with you.`);
 $("iframe").src=MAP;
-$(".hero").style.background=`url(${HERO.poster}) center/cover`;
-$("#hv").poster=HERO.poster;$("#hv").src=HERO.video;
+$(".hero").style.background=`url("${HERO.poster}") center/cover`;
+$("#hv").poster=HERO.poster;
+if(HERO.video)$("#hv").src=HERO.video; // only load a video when HERO-2 is filled in
 $("#dist").innerHTML=D.map(([p,v])=>`<li><span>${p}</span><span>${v}</span></li>`).join("");
 
 // Navbar
@@ -268,14 +339,14 @@ show(keys[0]);
 
 // Gallery filter + lightbox
 $("#chips").innerHTML=["All",...new Set(G.map(g=>g[0]))].map((c,i)=>`<button class="chip" aria-pressed="${!i}" data-c="${c}">${c}</button>`).join("");
-$("#gal").innerHTML=G.map(([c,t,id,s])=>`<button class="tile ${s}" data-c="${c}" data-id="${id}"><img loading="lazy" src="${U(id)}" alt="${t}"><span>${t}</span></button>`).join("");
+$("#gal").innerHTML=G.map(([c,t,src,s],i)=>`<button class="tile ${s}" data-c="${c}" data-i="${i}"><img loading="lazy" src="${src}" alt="${t}"><span>${t}</span></button>`).join("");
 $("#chips").onclick=e=>{
   const c=e.target.dataset.c;if(!c)return;
   $$(".chip").forEach(b=>b.setAttribute("aria-pressed",b===e.target));
   $$(".tile").forEach(t=>t.hidden=c!=="All"&&t.dataset.c!==c);
 };
 const lb=$("#lb");
-$("#gal").onclick=e=>{const t=e.target.closest(".tile");if(t){$("#lb img").src=U(t.dataset.id,1600);lb.showModal()}};
+$("#gal").onclick=e=>{const t=e.target.closest(".tile");if(t){$("#lb img").src=G[t.dataset.i][2];lb.showModal()}};
 lb.onclick=()=>lb.close();
 
 // Packages + amenities
