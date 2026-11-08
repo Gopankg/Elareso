@@ -79,6 +79,13 @@ nav .wrap{justify-content:space-between}
 .vids{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
 figure{margin:0}
 .vids video{width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--card)}
+/* YouTube walkthrough: thumbnail with a play button, swapped for the YouTube player on click */
+.vplay,.vids iframe{display:block;width:100%;aspect-ratio:16/10;background:var(--card)}
+.vids iframe{height:auto;min-height:0;border:0;filter:none}
+.vplay{position:relative;padding:0;border:0;overflow:hidden;cursor:pointer}
+.vplay img{width:100%;height:100%;object-fit:cover}
+.vplay::after{content:"";position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(18,32,26,.65) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E") center/30px no-repeat;transition:background-color .2s}
+.vplay:hover::after{background-color:rgba(18,32,26,.85)}
 figcaption{font-size:14px;color:var(--mute);margin-top:8px}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));grid-auto-rows:220px;grid-auto-flow:dense;gap:12px}
 .tile{position:relative;padding:0;border:0;overflow:hidden;cursor:zoom-in;background:var(--card)}
@@ -119,8 +126,12 @@ input,select,textarea{font:300 15px Inter,sans-serif;background:var(--field);col
 iframe{width:100%;height:100%;min-height:340px;border:0;filter:grayscale(.4)}
 .dist{list-style:none;padding:0;margin:18px 0 22px}
 .dist li{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.sl{display:flex;gap:12px;flex-wrap:wrap}
 footer{padding:48px 24px;background:var(--forest);text-align:center;color:var(--on-dark-mute);font-size:14px}
 footer a:hover{color:var(--sage)}
+.social{display:flex;gap:14px;justify-content:center;margin-top:18px}
+.social a{display:grid;place-items:center;width:42px;height:42px;border:1px solid rgba(197,210,200,.4);border-radius:50%;transition:background .2s,color .2s}
+.social a:hover{background:rgba(255,255,255,.1)}
 .wf{position:fixed;right:20px;bottom:20px;z-index:40;background:#25d366;color:#08240f;font-weight:500;padding:13px 20px;border-radius:99px;box-shadow:0 6px 20px rgba(31,45,38,.3)}
 @media(max-width:860px){.burger{display:block}.phone{display:none}.links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--forest);padding:20px 24px;gap:16px}.links.open{display:flex}.bk,.loc{grid-template-columns:1fr}}
 @media(max-width:600px){.wide{grid-column:auto}form{grid-template-columns:1fr}section{padding:72px 20px}}
@@ -201,7 +212,10 @@ footer a:hover{color:var(--sage)}
     <div>
       <p data-e="loc"></p>
       <ul class="dist" id="dist"></ul>
-      <a class="btn ghost" id="ig" target="_blank" rel="noopener">Follow on Instagram</a>
+      <div class="sl">
+        <a class="btn ghost" id="ig" target="_blank" rel="noopener">Follow on Instagram</a>
+        <a class="btn ghost" id="fb" target="_blank" rel="noopener">Follow on Facebook</a>
+      </div>
     </div>
   </div>
 </div></section>
@@ -210,6 +224,12 @@ footer a:hover{color:var(--sage)}
 <footer>
   <p>© <span id="yr"></span> <span data-e="name"></span>. <span data-e="tagline"></span></p>
   <p><span data-e="loc"></span> · <a id="fp" data-e="phone"></a></p>
+  <!-- SOCIAL ICONS: these two links come from E.ig and E.fb at the top of the script
+       (search for "SOCIAL LINKS"). Change them there, not here. -->
+  <div class="social">
+    <a id="fi" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+    <a id="ff" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+  </div>
 </footer>
 <a class="wf" id="wf" target="_blank" rel="noopener">Chat on WhatsApp</a>
 <dialog id="lb"><img alt=""></dialog>
@@ -246,7 +266,9 @@ footer a:hover{color:var(--sage)}
      GitHub refuses files over 100 MB.
    ===================================================================== */
 
-const E={name:"Elavu",tagline:"Rooted in peace.",wa:"918590074240",phone:"+91 85900 74240",ig:"https://instagram.com/elavu",loc:"Mamalakandam, Ernakulam, Kerala"};
+// SOCIAL LINKS: replace "ig" and "fb" below with your real Instagram and Facebook page links.
+// They are used in the footer icons and in the "Find us" section.
+const E={name:"Elavu",tagline:"Rooted in peace.",wa:"918590074240",phone:"+91 85900 74240",ig:"https://www.instagram.com/elavuresort?utm_source=qr&vrfl=bmJqa3N3eTB5enhj",fb:"https://www.facebook.com/people/Elavu-Resorts/pfbid021zsecfFkkt6j2SgKqzrMAAGCCZ344mQnsrTcebbkkUXUfFhwczaJbRAMeLYTf3Jml/",loc:"Mamalakandam, Ernakulam, Kerala"};
 
 // Folder names inside your repo. Change these two lines if your folders are named differently.
 const IMG="IMG/";
@@ -272,26 +294,28 @@ const MAP="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3927.9010150956
 
 /* ---------- WALKTHROUGH VIDEOS (the two building tabs) ----------
    Each entry is [floor name, poster image, video].
-   The poster image is the still shown before the video is played. */
+   The poster image is the thumbnail shown before the video is played.
+   The video is a YouTube link (Shorts links work). To change one, paste a new
+   YouTube link in place of the old one. Make sure "Allow embedding" is on in YouTube Studio. */
 const WALK={
   "A-Frame Canopy Villa":[
     ["Ground Floor",
       IMG+"a0.png", /* STOCK [WALK-1 poster] e.g. IMG+"aframe-ground.jpg" */
-      VID+"a0.mp4"                                    /* STOCK [WALK-1 video]  e.g. VID+"aframe-ground.mp4" */
+      "https://youtube.com/shorts/0krYxR1kwt8?feature=share"   /* [WALK-1 video] YouTube link */
     ],
     ["Upper Floor",
       IMG+"a1.png", /* STOCK [WALK-2 poster] e.g. IMG+"aframe-upper.jpg" */
-      VID+"a1.mp4"                                    /* STOCK [WALK-2 video]  e.g. VID+"aframe-upper.mp4" */
+      "https://youtube.com/shorts/nrbXRYCo8Zw?feature=share"   /* [WALK-2 video] YouTube link */
     ]
   ],
   "The Plantation House":[
     ["Ground Floor",
       IMG+"b0.png", /* STOCK [WALK-3 poster] e.g. IMG+"plantation-ground.jpg" */
-      VID+"b0.mp4"                                    /* STOCK [WALK-3 video]  e.g. VID+"plantation-ground.mp4" */
+      "https://youtube.com/shorts/CSzKwBCo-ss?feature=share"   /* [WALK-3 video] YouTube link */
     ],
     ["Upper Floor",
       IMG+"b1.png", /* STOCK [WALK-4 poster] e.g. IMG+"plantation-upper.jpg" */
-      VID+"b1.mp4"                                    /* STOCK [WALK-4 video]  e.g. VID+"plantation-upper.mp4" */
+      "https://www.youtube.com/shorts/D4vr-vgAZbA"   /* [WALK-4 video] YouTube link */
     ]
   ]
 };
@@ -341,7 +365,8 @@ const IC={
 // Static text from the EDIT block
 $$("[data-e]").forEach(el=>el.textContent=E[el.dataset.e]);
 $("#ph").href=$("#fp").href="tel:"+E.phone.replace(/\s/g,"");
-$("#ig").href=E.ig;$("#yr").textContent=new Date().getFullYear();
+$("#ig").href=$("#fi").href=E.ig;$("#fb").href=$("#ff").href=E.fb;
+$("#yr").textContent=new Date().getFullYear();
 $("#wf").href=wa(`Hello ${E.name}! I’d like to know more about staying with you.`);
 $("iframe").src=MAP;
 $(".hero").style.background=`url("${HERO.poster}") center/cover`;
@@ -358,12 +383,15 @@ lk.onclick=e=>{if(e.target.tagName==="A"){lk.classList.remove("open");bg.setAttr
 
 // Walkthrough tabs
 const keys=Object.keys(WALK);
+const yt=u=>(u.match(/(?:shorts\/|v=|youtu\.be\/|embed\/)([\w-]{11})/)||[])[1]||u; // YouTube link -> video ID
 $("#tabs").innerHTML=keys.map(k=>`<button role="tab" data-k="${k}">${k}</button>`).join("");
 const show=k=>{
   $$("#tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.k===k));
-  $("#vids").innerHTML=WALK[k].map(([f,po,s])=>`<figure><video controls preload="none" playsinline poster="${po}" src="${s}"></video><figcaption>Walkaround: ${k} — ${f}</figcaption></figure>`).join("");
+  $("#vids").innerHTML=WALK[k].map(([f,po,s])=>`<figure><button class="vplay" data-v="${yt(s)}" aria-label="Play video: ${k} — ${f}"><img src="${po}" alt=""></button><figcaption>Walkaround: ${k} — ${f}</figcaption></figure>`).join("");
 };
 $("#tabs").onclick=e=>{const k=e.target.dataset.k;if(k)show(k)};
+// Clicking a thumbnail swaps it for the YouTube player and starts the video
+$("#vids").onclick=e=>{const b=e.target.closest(".vplay");if(b)b.outerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${b.dataset.v}?autoplay=1&rel=0&playsinline=1" title="Walkthrough video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`};
 show(keys[0]);
 
 // Gallery filter + lightbox
